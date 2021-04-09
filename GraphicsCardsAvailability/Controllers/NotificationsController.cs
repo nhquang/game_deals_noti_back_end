@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using GraphicsCardsAvailability.Models;
+using GraphicsCardsAvailability.Services.Interfaces;
 
 namespace GraphicsCardsAvailability.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("notifications/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class NotificationsController : ControllerBase
     {
+        private IDBContext _dBContext;
+
+        public NotificationsController(IDBContext dBContext)
+        {
+            _dBContext = dBContext;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -26,8 +35,9 @@ namespace GraphicsCardsAvailability.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Notification notification)
         {
+            _dBContext.AddNotification(notification);
         }
 
         // PUT api/values/5

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GraphicsCardsAvailability.Services.Interfaces;
 using GraphicsCardsAvailability.Configurations;
 using Microsoft.Extensions.Options;
+using GraphicsCardsAvailability.Utilities;
 
 namespace GraphicsCardsAvailability.Services
 {
@@ -19,7 +20,7 @@ namespace GraphicsCardsAvailability.Services
 
         public void ScanningItemsAndSendingNoti()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

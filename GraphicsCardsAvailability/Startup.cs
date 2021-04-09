@@ -31,16 +31,28 @@ namespace GraphicsCardsAvailability
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //Add Swagger Service
             services.AddSwaggerGen();
+
+            //Add Hangfire Service
             services.AddHangfire(config =>
                 config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseDefaultTypeSerializer()
                 .UseMemoryStorage()
             );
-            services.Configure<DbConnectionConfigModel>(Configuration.GetSection("DbConnection"));
-            services.AddSingleton<IMainService, MainService>();
             services.AddHangfireServer();
+
+            //Add Database Connection Configurations
+            services.Configure<DbConnectionConfigModel>(Configuration.GetSection("DbConnection"));
+
+            //Add MainService
+            services.AddSingleton<IMainService, MainService>();
+
+            //Add DBContext
+            services.AddTransient<IDBContext, DBContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,11 +66,14 @@ namespace GraphicsCardsAvailability
             {
                 app.UseHsts();
             }
+
+            //Configure Swagger Service
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); c.RoutePrefix = string.Empty; });
 
+            //Add recurring hangfire jobs
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNoti(), "*/5 * * * *");
+            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNoti(), Cron.Minutely());
 
             app.UseHttpsRedirection();
             app.UseMvc();

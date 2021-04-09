@@ -8,5 +8,6 @@ namespace GraphicsCardsAvailability.Configurations
     public class DbConnectionConfigModel
     {
         public string DbConnectionString { get; set; }
+        public string Password { get; set; }
     }
 }
