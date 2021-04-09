@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using GraphicsCardsAvailability.Configurations;
+using GraphicsCardsAvailability.Services.Interfaces;
+using GraphicsCardsAvailability.Services;
 
 namespace GraphicsCardsAvailability
 {
@@ -35,12 +38,13 @@ namespace GraphicsCardsAvailability
                 .UseDefaultTypeSerializer()
                 .UseMemoryStorage()
             );
-
+            services.Configure<DbConnectionConfigModel>(Configuration.GetSection("DbConnection"));
+            services.AddSingleton<IMainService, MainService>();
             services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRecurringJobManager recurringJobManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRecurringJobManager recurringJobManager, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -54,7 +58,7 @@ namespace GraphicsCardsAvailability
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); c.RoutePrefix = string.Empty; });
 
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("1",() => Console.WriteLine("asda"), "*/5 * * * *");
+            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNoti(), "*/5 * * * *");
 
             app.UseHttpsRedirection();
             app.UseMvc();

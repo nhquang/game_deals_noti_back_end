@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace GraphicsCardsAvailability.Services.Interfaces
 {
-    interface IDBContext
+    interface IMainService
     {
-
+        void ScanningItemsAndSendingNoti();
     }
 }
