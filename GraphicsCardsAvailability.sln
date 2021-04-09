@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1321
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsCardsAvailability", "GraphicsCardsAvailability\GraphicsCardsAvailability.csproj", "{CF97DDE2-DAF2-4A04-BBE2-9827077440C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF97DDE2-DAF2-4A04-BBE2-9827077440C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF97DDE2-DAF2-4A04-BBE2-9827077440C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF97DDE2-DAF2-4A04-BBE2-9827077440C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF97DDE2-DAF2-4A04-BBE2-9827077440C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4A4F553-A0C0-421E-B52A-B60E9F89BFFD}
+	EndGlobalSection
+EndGlobal
