@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Hangfire;
+using Hangfire.MemoryStorage;
 
 namespace GraphicsCardsAvailability
 {
@@ -27,10 +29,18 @@ namespace GraphicsCardsAvailability
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSwaggerGen();
+            services.AddHangfire(config =>
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage()
+            );
+
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRecurringJobManager recurringJobManager)
         {
             if (env.IsDevelopment())
             {
@@ -42,6 +52,9 @@ namespace GraphicsCardsAvailability
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); c.RoutePrefix = string.Empty; });
+
+            app.UseHangfireDashboard();
+            recurringJobManager.AddOrUpdate("1",() => Console.WriteLine("asda"), "*/5 * * * *");
 
             app.UseHttpsRedirection();
             app.UseMvc();
