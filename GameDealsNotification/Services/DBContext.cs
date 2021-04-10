@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphicsCardsAvailability.Configurations;
-using GraphicsCardsAvailability.Models;
-using GraphicsCardsAvailability.Services.Interfaces;
-using GraphicsCardsAvailability.Utilities;
+using GameDealsNotification.Configurations;
+using GameDealsNotification.Models;
+using GameDealsNotification.Services.Interfaces;
+using GameDealsNotification.Utilities;
 using Microsoft.Extensions.Options;
 
-namespace GraphicsCardsAvailability.Services
+namespace GameDealsNotification.Services
 {
     public class DBContext : IDBContext
     {

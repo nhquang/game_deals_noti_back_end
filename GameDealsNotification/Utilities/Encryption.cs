@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphicsCardsAvailability.Utilities
+namespace GameDealsNotification.Utilities
 {
     public static class Encryption
     {

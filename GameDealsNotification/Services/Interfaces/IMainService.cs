@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphicsCardsAvailability.Services.Interfaces
+namespace GameDealsNotification.Services.Interfaces
 {
     public interface IMainService
     {

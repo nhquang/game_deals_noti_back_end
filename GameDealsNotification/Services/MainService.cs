@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphicsCardsAvailability.Services.Interfaces;
-using GraphicsCardsAvailability.Configurations;
+using System.Threading;
+using GameDealsNotification.Services.Interfaces;
+using GameDealsNotification.Configurations;
 using Microsoft.Extensions.Options;
-using GraphicsCardsAvailability.Utilities;
+using GameDealsNotification.Utilities;
 
-namespace GraphicsCardsAvailability.Services
+namespace GameDealsNotification.Services
 {
     public class MainService : IMainService
     {
@@ -20,7 +21,7 @@ namespace GraphicsCardsAvailability.Services
 
         public void ScanningItemsAndSendingNoti()
         {
-            
+            var a = Thread.CurrentThread.ManagedThreadId;
         }
     }
 }

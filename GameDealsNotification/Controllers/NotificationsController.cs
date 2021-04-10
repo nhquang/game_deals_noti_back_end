@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using GraphicsCardsAvailability.Models;
-using GraphicsCardsAvailability.Services.Interfaces;
+using GameDealsNotification.Models;
+using GameDealsNotification.Services.Interfaces;
+using System.Threading;
 
-namespace GraphicsCardsAvailability.Controllers
+namespace GameDealsNotification.Controllers
 {
     [Route("notifications/[controller]")]
     [ApiController]
@@ -35,9 +36,11 @@ namespace GraphicsCardsAvailability.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post(Notification notification)
+        public ActionResult Post(Notification notification)
         {
+            var a = Thread.CurrentThread.ManagedThreadId;
             _dBContext.AddNotification(notification);
+            return Ok();
         }
 
         // PUT api/values/5

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphicsCardsAvailability.Configurations
+namespace GameDealsNotification.Configurations
 {
     public class DbConnectionConfigModel
     {

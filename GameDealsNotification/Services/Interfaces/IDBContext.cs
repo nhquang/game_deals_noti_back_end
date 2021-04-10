@@ -1,10 +1,10 @@
-﻿using GraphicsCardsAvailability.Models;
+﻿using GameDealsNotification.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphicsCardsAvailability.Services.Interfaces
+namespace GameDealsNotification.Services.Interfaces
 {
     public interface IDBContext
     {

@@ -12,11 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using GraphicsCardsAvailability.Configurations;
-using GraphicsCardsAvailability.Services.Interfaces;
-using GraphicsCardsAvailability.Services;
+using GameDealsNotification.Configurations;
+using GameDealsNotification.Services.Interfaces;
+using GameDealsNotification.Services;
 
-namespace GraphicsCardsAvailability
+namespace GameDealsNotification
 {
     public class Startup
     {
