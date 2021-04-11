@@ -19,7 +19,7 @@ namespace GameDealsNotification.Services
         {
             _options = options;
         }
-        public bool AddNotification(Notification notification)
+        public async Task<bool> AddNotificationAsync(Notification notification)
         {
             var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
             try
@@ -27,13 +27,21 @@ namespace GameDealsNotification.Services
                 bool status = false;
                 using (var database = new SqlConnection(sqlString))
                 {
-
+                    await database.OpenAsync();
+                    var cmd = new SqlCommand("add_noti", database);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("email", notification.email));
+                    cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
+                    cmd.Parameters.Add(new SqlParameter("price", notification.price));
+                    cmd.Parameters.Add(new SqlParameter("name", notification.name));
+                    status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
+                    database.Close();
                 }
                 return status;
             }
             catch(Exception ex)
             {
-                return false;
+                throw;
             }
         }
 

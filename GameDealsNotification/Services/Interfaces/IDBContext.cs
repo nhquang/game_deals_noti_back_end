@@ -8,6 +8,6 @@ namespace GameDealsNotification.Services.Interfaces
 {
     public interface IDBContext
     {
-        bool AddNotification(Notification notification);
+        Task<bool> AddNotificationAsync(Notification notification);
     }
 }

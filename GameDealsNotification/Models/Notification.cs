@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameDealsNotification.Models
 {
     public class Notification
     {
-        public int card_id { get; set; }
+        [Required]
+        public int game_id { get; set; }
+        [StringLength(50)]
+        [Required]
         public string email { get; set; }
+        [StringLength(20)]
+        [Required]
         public string name { get; set; }
-        public int price { get; set; }
+        [Required]
+        public double price { get; set; }
     }
 }

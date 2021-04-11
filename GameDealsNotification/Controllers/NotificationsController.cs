@@ -21,38 +21,47 @@ namespace GameDealsNotification.Controllers
         }
 
         // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public ActionResult<IEnumerable<string>> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet("{id}")]
+        //public ActionResult<string> Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/values
         [HttpPost]
-        public ActionResult Post(Notification notification)
+        [Route("AddNotification")]
+        public async Task<ActionResult> Post(Notification notification)
         {
-            var a = Thread.CurrentThread.ManagedThreadId;
-            _dBContext.AddNotification(notification);
-            return Ok();
+            try
+            {
+                if (!ModelState.IsValid) throw new Exception("Invalid inputs!!!");
+
+                if (!(await _dBContext.AddNotificationAsync(notification))) throw new Exception("Failed to create price alert!!!");
+                return Ok(new { status = true, message = "Price alert created successfully!!!" });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { status = false, message = ex.Message });
+            }
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
