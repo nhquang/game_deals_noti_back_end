@@ -13,7 +13,7 @@ namespace GameDealsNotification.Services
 {
     public class DBContext : IDBContext
     {
-        private IOptions<DbConnectionConfigModel> _options;
+        private readonly IOptions<DbConnectionConfigModel> _options;
 
         public DBContext(IOptions<DbConnectionConfigModel> options)
         {

@@ -6,26 +6,44 @@ using Microsoft.AspNetCore.Mvc;
 using GameDealsNotification.Models;
 using GameDealsNotification.Services.Interfaces;
 using System.Threading;
+using Microsoft.Extensions.Options;
+using GameDealsNotification.Configurations;
 
 namespace GameDealsNotification.Controllers
 {
-    [Route("notifications/[controller]")]
+    [Route("notifications")]
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-        private IDBContext _dBContext;
+        private readonly IDBContext _dBContext;
+        private readonly IHttpRequest _httpRequest;
+        private readonly IOptions<Settings> _settings;
 
-        public NotificationsController(IDBContext dBContext)
+        public NotificationsController(IDBContext dBContext, IHttpRequest httpRequest, IOptions<Settings> settings)
         {
             _dBContext = dBContext;
+            _httpRequest = httpRequest;
+            _settings = settings;
         }
 
         // GET api/values
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        [HttpGet]
+        [Route("GetGames")]
+        public async Task<ActionResult> Get()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Request.Query["title"]) || string.IsNullOrWhiteSpace(Request.Query["title"])) throw new Exception("title is required!!!");
+                var queries = new Dictionary<string, string>();
+                queries.Add("title", Request.Query["title"]);
+                var response = await _httpRequest.GetRequestAsync(_settings.Value.GetGamesURL, queries);
+                return Ok(new { status = true, games = response });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { status = false, message = ex.Message });
+            }
+        }
 
         // GET api/values/5
         //[HttpGet("{id}")]

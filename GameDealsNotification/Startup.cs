@@ -47,12 +47,17 @@ namespace GameDealsNotification
             //Add Database Connection Configurations
             services.Configure<DbConnectionConfigModel>(Configuration.GetSection("DbConnection"));
 
+            //Add other settings
+            services.Configure<Settings>(Configuration.GetSection("Settings"));
+
             //Add MainService
             services.AddSingleton<IMainService, MainService>();
 
             //Add DBContext
             services.AddTransient<IDBContext, DBContext>();
 
+            //Add httprequest service
+            services.AddTransient<IHttpRequest, HttpRequest>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
