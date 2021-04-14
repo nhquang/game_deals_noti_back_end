@@ -39,10 +39,10 @@ namespace GameDealsNotification.Services
                     var temp = JsonConvert.DeserializeObject<SpecificGame>(responseString);
                     if(temp.deals[0].price <= item.price)
                     {
-                        if(await _emailService.SendEmailAsync(item, temp))
-                        {
+                        //if(await _emailService.SendEmailAsync(item, temp))
+                        //{
 
-                        }
+                        //}
                     }
                 }
             }
