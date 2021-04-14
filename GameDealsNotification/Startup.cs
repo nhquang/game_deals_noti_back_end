@@ -58,6 +58,9 @@ namespace GameDealsNotification
 
             //Add httprequest service
             services.AddTransient<IHttpRequest, HttpRequest>();
+
+            //Add email service
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +81,7 @@ namespace GameDealsNotification
 
             //Add recurring hangfire jobs
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNoti(), Cron.Minutely());
+            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNotiAsync(), Cron.Minutely());
 
             app.UseHttpsRedirection();
             app.UseMvc();

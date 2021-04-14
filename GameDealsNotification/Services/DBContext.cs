@@ -35,6 +35,7 @@ namespace GameDealsNotification.Services
                     cmd.Parameters.Add(new SqlParameter("price", notification.price));
                     cmd.Parameters.Add(new SqlParameter("name", notification.name));
                     status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
+                    cmd.Dispose();
                     database.Close();
                 }
                 return status;
@@ -45,5 +46,32 @@ namespace GameDealsNotification.Services
             }
         }
 
+        public async Task<List<Notification>> GetAllNotificationsAsync()
+        {
+            var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
+            var rslt = new List<Notification>();
+            using (var database = new SqlConnection(sqlString))
+            {
+                await database.OpenAsync();
+                var cmd = new SqlCommand("get_all_notifications", database);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var temp = new Notification()
+                    {
+                        game_id =(int) reader.GetInt64(0),
+                        email = reader.GetString(1),
+                        price =(double) reader.GetDecimal(2),
+                        name = reader.GetString(3)
+                    };
+                    rslt.Add(temp);
+                }
+                reader.Close();
+                cmd.Dispose();
+                database.Close();
+            }
+            return rslt;
+        }
     }
 }

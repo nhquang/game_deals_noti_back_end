@@ -8,6 +8,7 @@ using GameDealsNotification.Services.Interfaces;
 using System.Threading;
 using Microsoft.Extensions.Options;
 using GameDealsNotification.Configurations;
+using Newtonsoft.Json;
 
 namespace GameDealsNotification.Controllers
 {
@@ -37,7 +38,8 @@ namespace GameDealsNotification.Controllers
                 var queries = new Dictionary<string, string>();
                 queries.Add("title", Request.Query["title"]);
                 var response = await _httpRequest.GetRequestAsync(_settings.Value.GetGamesURL, queries);
-                return Ok(new { status = true, games = response });
+                var rslt = JsonConvert.DeserializeObject<Game[]>(response);
+                return Ok(new { status = true, games = rslt });
             }
             catch(Exception ex)
             {
@@ -55,12 +57,10 @@ namespace GameDealsNotification.Controllers
         // POST api/values
         [HttpPost]
         [Route("AddNotification")]
-        public async Task<ActionResult> Post(Notification notification)
+        public async Task<ActionResult> Post([FromBody]Notification notification)
         {
             try
             {
-                if (!ModelState.IsValid) throw new Exception("Invalid inputs!!!");
-
                 if (!(await _dBContext.AddNotificationAsync(notification))) throw new Exception("Failed to create price alert!!!");
                 return Ok(new { status = true, message = "Price alert created successfully!!!" });
             }

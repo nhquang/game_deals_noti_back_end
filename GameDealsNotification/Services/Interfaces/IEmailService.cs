@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameDealsNotification.Services.Interfaces
 {
-    public interface IDBContext
+    public interface IEmailService
     {
-        Task<bool> AddNotificationAsync(Notification notification);
-        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<bool> SendEmailAsync(Notification notification, SpecificGame deal);
     }
 }
