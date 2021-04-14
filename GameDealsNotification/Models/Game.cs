@@ -19,9 +19,10 @@ namespace GameDealsNotification.Models
     public class Deal
     {
         public int storeID { get; set; }
+        public string store { get; set; }
+        public string storeURL { get; set; }
         public string dealID { get; set; }
-        private double price_;
-        public double price { get { return price_; } set { price_ = value * 1.3334; } }
+        public double price { get; set; }
     }
     public class Info
     {

@@ -10,5 +10,6 @@ namespace GameDealsNotification.Services.Interfaces
     {
         Task<bool> AddNotificationAsync(Notification notification);
         Task<List<Notification>> GetAllNotificationsAsync();
+        Task<bool> DeleteNotificationAsync(Notification notification);
     }
 }

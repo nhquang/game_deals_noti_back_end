@@ -21,19 +21,30 @@ namespace GameDealsNotification.Services
             _options = options;
         }
 
-        public async Task<bool> SendEmailAsync(Notification notification, SpecificGame game)
+        public async Task<bool> SendNotiAsync(Notification notification, SpecificGame game)
         {
             try
             {
                 using (SmtpClient smtp = new SmtpClient(_options.Value.Emailkeys.Host, _options.Value.Emailkeys.Port))
                 {
-                    MailMessage mail = new MailMessage(new MailAddress(_options.Value.Emailkeys.Username), new MailAddress(notification.email));
+                    MailMessage mail = new MailMessage();
                     mail.Subject = $"{game.info.title} PRICE ALERT";
-                    mail.Body = $"{game.info.title} IS SELLING FOR {game.deals[0].price}!!!!";
+                    mail.Body = $"<!DOCTYPE html>"
+                              + $"<html>"
+                              + $"<body>"
+                              + $"<h1> Price Alert!!!!</h1>"
+                              + $"<div>"
+                              + $"<h3>Hi {notification.name},</h3>"
+                              + $"<h3>{game.info.title} is selling for <span style = 'color:red'>${game.deals[0].price}</span> on <a href = '{game.deals[0].storeURL}' style=''>{game.deals[0].store}</a></h3>"
+                              + $"</div>"
+                              + $"</body>"
+                              + $"</html>";
+                    mail.IsBodyHtml = true;
+                    mail.From = new MailAddress(_options.Value.Emailkeys.Username);
+                    mail.To.Add(new MailAddress(notification.email));
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(_options.Value.Emailkeys.Username, _options.Value.Emailkeys.Password);
-                    var a = Encryption.encryption(_options.Value.Emailkeys.Password);
+                    smtp.Credentials = new NetworkCredential(_options.Value.Emailkeys.Username,Encryption.decryption(_options.Value.Emailkeys.Password), _options.Value.Emailkeys.Host);
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     await smtp.SendMailAsync(mail);
                     mail.Dispose();

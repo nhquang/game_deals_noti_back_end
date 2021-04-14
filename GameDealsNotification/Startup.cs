@@ -81,7 +81,7 @@ namespace GameDealsNotification
 
             //Add recurring hangfire jobs
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningItemsAndSendingNotiAsync(), Cron.Minutely());
+            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningDealsAndSendingNotiAsync(), Cron.Minutely());
 
             app.UseHttpsRedirection();
             app.UseMvc();

@@ -7,6 +7,6 @@ namespace GameDealsNotification.Services.Interfaces
 {
     public interface IMainService
     {
-        Task ScanningItemsAndSendingNotiAsync();
+        Task ScanningDealsAndSendingNotiAsync();
     }
 }

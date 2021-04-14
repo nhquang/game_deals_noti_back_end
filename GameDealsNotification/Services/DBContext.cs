@@ -34,6 +34,33 @@ namespace GameDealsNotification.Services
                     cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
                     cmd.Parameters.Add(new SqlParameter("price", notification.price));
                     cmd.Parameters.Add(new SqlParameter("name", notification.name));
+                    cmd.Parameters.Add(new SqlParameter("currency", (int)notification.currency));
+                    status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
+                    cmd.Dispose();
+                    database.Close();
+                }
+                return status;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteNotificationAsync(Notification notification)
+        {
+            var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
+            try
+            {
+                bool status = false;
+                using (var database = new SqlConnection(sqlString))
+                {
+                    await database.OpenAsync();
+                    var cmd = new SqlCommand("delete_noti", database);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("email", notification.email));
+                    cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
+                    cmd.Parameters.Add(new SqlParameter("price", notification.price));
                     status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
                     cmd.Dispose();
                     database.Close();
@@ -60,10 +87,11 @@ namespace GameDealsNotification.Services
                 {
                     var temp = new Notification()
                     {
-                        game_id =(int) reader.GetInt64(0),
+                        game_id = (int)reader.GetInt64(0),
                         email = reader.GetString(1),
-                        price =(double) reader.GetDecimal(2),
-                        name = reader.GetString(3)
+                        price = (double)reader.GetDecimal(2),
+                        name = reader.GetString(3),
+                        currency = (Currency)reader.GetInt32(4)
                     };
                     rslt.Add(temp);
                 }
@@ -73,5 +101,7 @@ namespace GameDealsNotification.Services
             }
             return rslt;
         }
+
+        
     }
 }

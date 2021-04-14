@@ -8,6 +8,6 @@ namespace GameDealsNotification.Services.Interfaces
 {
     public interface IEmailService
     {
-        Task<bool> SendEmailAsync(Notification notification, SpecificGame deal);
+        Task<bool> SendNotiAsync(Notification notification, SpecificGame deal);
     }
 }

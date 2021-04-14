@@ -20,5 +20,8 @@ namespace GameDealsNotification.Models
         [Required]
         [Range(0,double.MaxValue)]
         public double price { get; set; }
+        [Required]
+        [Range(1,2)]
+        public Currency currency { get; set; }
     }
 }
