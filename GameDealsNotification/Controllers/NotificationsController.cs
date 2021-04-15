@@ -34,7 +34,7 @@ namespace GameDealsNotification.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(Request.Query["title"]) || string.IsNullOrWhiteSpace(Request.Query["title"])) throw new Exception("title is required!!!");
+                if (string.IsNullOrEmpty(Request.Query["title"]) || string.IsNullOrWhiteSpace(Request.Query["title"])) return BadRequest();
                 var queries = new Dictionary<string, string>();
                 queries.Add("title", Request.Query["title"]);
                 var response = await _httpRequest.GetRequestAsync(_settings.Value.GetGamesURL, queries);
@@ -48,11 +48,22 @@ namespace GameDealsNotification.Controllers
         }
 
         // GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpGet]
+        [Route("GetNotifications")]
+        public async Task<ActionResult> GetNotifications()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Request.Query["email"]) || string.IsNullOrWhiteSpace(Request.Query["email"])) return BadRequest();
+                var notifications = await _dBContext.GetNotificationsByEmailAsync(Request.Query["email"]);
+                return Ok(new { status = true, notifications = notifications.ToArray() });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { status = false, message = ex.Message });
+            }
+
+        }
 
         // POST api/values
         [HttpPost]
@@ -77,9 +88,19 @@ namespace GameDealsNotification.Controllers
         //}
 
         // DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete]
+        [Route("DeleteNotification")]
+        public async Task<ActionResult> Delete([FromBody] Notification notification)
+        {
+            try
+            {
+                if (!(await _dBContext.DeleteNotificationAsync(notification))) throw new Exception("Failed to remove price alert!!!");
+                return Ok(new { status = true, message = "Price alert removed successfully!!!" });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { status = false, message = ex.Message });
+            }
+        }
     }
 }

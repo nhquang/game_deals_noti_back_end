@@ -22,55 +22,41 @@ namespace GameDealsNotification.Services
         public async Task<bool> AddNotificationAsync(Notification notification)
         {
             var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
-            try
+            bool status = false;
+            using (var database = new SqlConnection(sqlString))
             {
-                bool status = false;
-                using (var database = new SqlConnection(sqlString))
-                {
-                    await database.OpenAsync();
-                    var cmd = new SqlCommand("add_noti", database);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("email", notification.email));
-                    cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
-                    cmd.Parameters.Add(new SqlParameter("price", notification.price));
-                    cmd.Parameters.Add(new SqlParameter("name", notification.name));
-                    cmd.Parameters.Add(new SqlParameter("currency", (int)notification.currency));
-                    status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
-                    cmd.Dispose();
-                    database.Close();
-                }
-                return status;
+                await database.OpenAsync();
+                var cmd = new SqlCommand("add_noti", database);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("email", notification.email));
+                cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
+                cmd.Parameters.Add(new SqlParameter("price", notification.price));
+                cmd.Parameters.Add(new SqlParameter("name", notification.name));
+                cmd.Parameters.Add(new SqlParameter("currency", (int)notification.currency));
+                status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
+                cmd.Dispose();
+                database.Close();
             }
-            catch(Exception ex)
-            {
-                throw;
-            }
+            return status;
         }
 
         public async Task<bool> DeleteNotificationAsync(Notification notification)
         {
             var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
-            try
+            bool status = false;
+            using (var database = new SqlConnection(sqlString))
             {
-                bool status = false;
-                using (var database = new SqlConnection(sqlString))
-                {
-                    await database.OpenAsync();
-                    var cmd = new SqlCommand("delete_noti", database);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("email", notification.email));
-                    cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
-                    cmd.Parameters.Add(new SqlParameter("price", notification.price));
-                    status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
-                    cmd.Dispose();
-                    database.Close();
-                }
-                return status;
+                await database.OpenAsync();
+                var cmd = new SqlCommand("delete_noti", database);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("email", notification.email));
+                cmd.Parameters.Add(new SqlParameter("game_id", notification.game_id));
+                cmd.Parameters.Add(new SqlParameter("price", notification.price));
+                status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
+                cmd.Dispose();
+                database.Close();
             }
-            catch(Exception ex)
-            {
-                throw;
-            }
+            return status;
         }
 
         public async Task<List<Notification>> GetAllNotificationsAsync()
@@ -102,6 +88,34 @@ namespace GameDealsNotification.Services
             return rslt;
         }
 
-        
+        public async Task<List<Notification>> GetNotificationsByEmailAsync(string email)
+        {
+            var sqlString = _options.Value.DbConnectionString.Replace("{your_password}", Encryption.decryption(_options.Value.Password));
+            var rslt = new List<Notification>();
+            using (var database = new SqlConnection(sqlString))
+            {
+                await database.OpenAsync();
+                var cmd = new SqlCommand("get_notifications_by_email", database);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("email", email));
+                var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var temp = new Notification()
+                    {
+                        game_id = (int)reader.GetInt64(0),
+                        email = reader.GetString(1),
+                        price = (double)reader.GetDecimal(2),
+                        name = reader.GetString(3),
+                        currency = (Currency)reader.GetInt32(4)
+                    };
+                    rslt.Add(temp);
+                }
+                reader.Close();
+                cmd.Dispose();
+                database.Close();
+            }
+            return rslt;
+        }
     }
 }
