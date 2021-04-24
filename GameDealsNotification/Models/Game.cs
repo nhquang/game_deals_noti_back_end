@@ -9,7 +9,7 @@ namespace GameDealsNotification.Models
     {
         public long gameID { get; set; }
         public string external { get; set; }
-        //public double cheapest { get; set; }
+        public string thumb { get; set; }
     }
     public class SpecificGame
     {

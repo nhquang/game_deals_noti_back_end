@@ -37,7 +37,7 @@ namespace GameDealsNotification.Services
                 foreach(var noti in noties)
                 {
                     query["id"] = noti.game_id.ToString();
-                    var responseString = await _httpRequest.GetRequestAsync("https://www.cheapshark.com/api/1.0/games", query);
+                    var responseString = await _httpRequest.GetRequestAsync(_options.Value.GetGamesURL, query);
                     var temp = JsonConvert.DeserializeObject<SpecificGame>(responseString);
                     if (noti.currency == Currency.CAD) temp.deals[0].price = Math.Round(temp.deals[0].price * 1.3335, 2) ;
                     if (temp.deals[0].price < noti.price + 3)
