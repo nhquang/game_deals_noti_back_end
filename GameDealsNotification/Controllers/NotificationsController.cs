@@ -9,6 +9,7 @@ using System.Threading;
 using Microsoft.Extensions.Options;
 using GameDealsNotification.Configurations;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace GameDealsNotification.Controllers
 {
@@ -30,6 +31,7 @@ namespace GameDealsNotification.Controllers
         // GET api/values
         [HttpGet]
         [Route("GetGames")]
+        [EnableCors("MyPolicy")]
         public async Task<ActionResult> Get()
         {
             try
