@@ -32,7 +32,9 @@ namespace GameDealsNotification
         {
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
+                builder.AllowAnyMethod();
                 builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
             }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -85,7 +87,7 @@ namespace GameDealsNotification
 
             //Add recurring hangfire jobs
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningDealsAndSendingNotiAsync(), Cron.Minutely());
+            recurringJobManager.AddOrUpdate("1",() => serviceProvider.GetService<IMainService>().ScanningDealsAndSendingNotiAsync(), "*/15 * * * *");
 
             app.UseHttpsRedirection();
             app.UseMvc();

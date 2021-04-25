@@ -38,7 +38,7 @@ namespace GameDealsNotification.Controllers
             {
                 if (string.IsNullOrEmpty(Request.Query["title"]) || string.IsNullOrWhiteSpace(Request.Query["title"])) return BadRequest();
                 var queries = new Dictionary<string, string>();
-                queries.Add("title", Request.Query["title"]);
+                queries.Add("title", Request.Query["title"].ToString().Replace(" ",""));
                 var response = await _httpRequest.GetRequestAsync(_settings.Value.GetGamesURL, queries);
                 var rslt = JsonConvert.DeserializeObject<Game[]>(response);
                 return Ok(new { status = true, games = rslt });
@@ -70,6 +70,7 @@ namespace GameDealsNotification.Controllers
         // POST api/values
         [HttpPost]
         [Route("AddNotification")]
+        [EnableCors("MyPolicy")]
         public async Task<ActionResult> Post([FromBody]Notification notification)
         {
             try
