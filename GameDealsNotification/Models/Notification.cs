@@ -23,5 +23,8 @@ namespace GameDealsNotification.Models
         [Required]
         [Range(1,2)]
         public Currency currency { get; set; }
+        [StringLength(50)]
+        [Required(AllowEmptyStrings = false)]
+        public string game { get; set; }
     }
 }

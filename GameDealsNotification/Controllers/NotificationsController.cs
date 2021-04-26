@@ -20,12 +20,14 @@ namespace GameDealsNotification.Controllers
         private readonly IDBContext _dBContext;
         private readonly IHttpRequest _httpRequest;
         private readonly IOptions<Settings> _settings;
+        private readonly IEmailService _emailService;
 
-        public NotificationsController(IDBContext dBContext, IHttpRequest httpRequest, IOptions<Settings> settings)
+        public NotificationsController(IDBContext dBContext, IHttpRequest httpRequest, IEmailService emailService, IOptions<Settings> settings)
         {
             _dBContext = dBContext;
             _httpRequest = httpRequest;
             _settings = settings;
+            _emailService = emailService;
         }
 
         // GET api/values
@@ -76,7 +78,8 @@ namespace GameDealsNotification.Controllers
             try
             {
                 if (!(await _dBContext.AddNotificationAsync(notification))) throw new Exception("Failed to create price alert!!!");
-                return Ok(new { status = true, message = "Price alert created successfully!!!" });
+                if(!(await _emailService.SendConfirmationEmailAsync(notification))) throw new Exception("Price alert created successfully, but we failed to send you a confirmation email!!!"); ;
+                return Ok(new { status = true, message = "Price alert created successfully. A confirmation email has been sent!!!" });
             }
             catch(Exception ex)
             {

@@ -33,6 +33,7 @@ namespace GameDealsNotification.Services
                 cmd.Parameters.Add(new SqlParameter("price", notification.price));
                 cmd.Parameters.Add(new SqlParameter("name", notification.name));
                 cmd.Parameters.Add(new SqlParameter("currency", (int)notification.currency));
+                cmd.Parameters.Add(new SqlParameter("game", notification.game));
                 status = (await cmd.ExecuteNonQueryAsync()) > 0 ? true : false;
                 cmd.Dispose();
                 database.Close();
@@ -77,7 +78,8 @@ namespace GameDealsNotification.Services
                         email = reader.GetString(1),
                         price = (double)reader.GetDecimal(2),
                         name = reader.GetString(3),
-                        currency = (Currency)reader.GetInt32(4)
+                        currency = (Currency)reader.GetInt32(4),
+                        game = reader.GetString(5)
                     };
                     rslt.Add(temp);
                 }
@@ -107,7 +109,8 @@ namespace GameDealsNotification.Services
                         email = reader.GetString(1),
                         price = (double)reader.GetDecimal(2),
                         name = reader.GetString(3),
-                        currency = (Currency)reader.GetInt32(4)
+                        currency = (Currency)reader.GetInt32(4),
+                        game = reader.GetString(5)
                     };
                     rslt.Add(temp);
                 }
