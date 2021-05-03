@@ -124,7 +124,7 @@ namespace GameDealsNotification.Services
             }
             catch(Exception ex)
             {
-
+                //will add logging here
             }
         }
     }
