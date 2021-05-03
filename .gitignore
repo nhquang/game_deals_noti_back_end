@@ -264,3 +264,4 @@ __pycache__/
 *.azurePubxml
 *.pubxml
 *.publishproj
+*.json
