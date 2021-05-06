@@ -34,7 +34,7 @@ namespace GameDealsNotification.Controllers
         [HttpGet]
         [Route("GetGames")]
         [EnableCors("MyPolicy")]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> GetGames()
         {
             try
             {
@@ -67,6 +67,104 @@ namespace GameDealsNotification.Controllers
                 return Ok(new { status = false, message = ex.Message });
             }
 
+        }
+        [HttpGet]
+        [Route("GetDeals")]
+        [EnableCors("MyPolicy")]
+        public async Task<ActionResult> GetDeals()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Request.Query["id"]) || string.IsNullOrWhiteSpace(Request.Query["id"])) return BadRequest();
+                var queries = new Dictionary<string, string>();
+                queries.Add("id", Request.Query["id"]);
+                var response = await _httpRequest.GetRequestAsync(_settings.Value.GetGamesURL, queries);
+                var rs = JsonConvert.DeserializeObject<SpecificGame>(response);
+                for(int i = 0; i < rs.deals.Length; i++)
+                {
+                    switch (rs.deals[i].storeID)
+                    {
+                        case (int)Store.Steam:
+                            rs.deals[i].store = Store.Steam.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Steam;
+                            break;
+                        case (int)Store.GamersGate:
+                            rs.deals[i].store = Store.GamersGate.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.GamersGate;
+                            break;
+                        case (int)Store.GreenManGaming:
+                            rs.deals[i].store = Store.GreenManGaming.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.GreenManGaming;
+                            break;
+                        case (int)Store.Direct2Drive:
+                            rs.deals[i].store = Store.Direct2Drive.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Direct2Drive;
+                            break;
+                        case (int)Store.GOG:
+                            rs.deals[i].store = Store.GOG.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.GOG;
+                            break;
+                        case (int)Store.Origin:
+                            rs.deals[i].store = Store.Origin.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Origin;
+                            break;
+                        case (int)Store.HumbleStore:
+                            rs.deals[i].store = Store.HumbleStore.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.HumbleStore;
+                            break;
+                        case (int)Store.Uplay:
+                            rs.deals[i].store = Store.Uplay.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Uplay;
+                            break;
+                        case (int)Store.Fanatical:
+                            rs.deals[i].store = Store.Fanatical.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Fanatical;
+                            break;
+                        case (int)Store.WinGameStore:
+                            rs.deals[i].store = Store.WinGameStore.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.WinGameStore;
+                            break;
+                        case (int)Store.GameBillet:
+                            rs.deals[i].store = Store.GameBillet.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.GameBillet;
+                            break;
+                        case (int)Store.EpicGames:
+                            rs.deals[i].store = Store.EpicGames.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.EpicGames;
+                            break;
+                        case (int)Store.Gamesplanet:
+                            rs.deals[i].store = Store.Gamesplanet.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.GamesPlanet;
+                            break;
+                        case (int)Store.Gamesload:
+                            rs.deals[i].store = Store.Gamesload.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Gamesload;
+                            break;
+                        case (int)Store.TwoGame:
+                            rs.deals[i].store = Store.TwoGame.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.TwoGame;
+                            break;
+                        case (int)Store.IndieGala:
+                            rs.deals[i].store = Store.IndieGala.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.IndieGala;
+                            break;
+                        case (int)Store.Blizzard:
+                            rs.deals[i].store = Store.Blizzard.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Blizzard;
+                            break;
+                        case (int)Store.AllYouPlay:
+                            rs.deals[i].store = Store.AllYouPlay.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.AllYouPlay;
+                            break;
+                    }
+                }
+
+                return Ok(new { status = true, deals = rs.deals });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { status = false, message = ex.Message });
+            }
         }
 
         // POST api/values

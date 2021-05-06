@@ -23,6 +23,7 @@ namespace GameDealsNotification.Models
         public string storeURL { get; set; }
         public string dealID { get; set; }
         public double price { get; set; }
+        public double retailPrice { get; set; }
     }
     public class Info
     {
