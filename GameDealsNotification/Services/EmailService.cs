@@ -15,6 +15,7 @@ namespace GameDealsNotification.Services
     public class EmailService : IEmailService
     {
         private readonly IOptions<Settings> _options;
+        private const string REDIRECT_URL = "https://www.cheapshark.com/redirect?dealID=";
 
         public EmailService(IOptions<Settings> options)
         {
@@ -46,7 +47,7 @@ namespace GameDealsNotification.Services
                               + $"<h1>Price Alert!!!!</h1>"
                               + $"<div>"
                               + $"<h3>Hi {notification.name},</h3>"
-                              + $"<h3>{game.info.title} is selling for <span style = 'color:red'>${game.deals[0].price}</span> on <a href = '{game.deals[0].storeURL}' style=''>{game.deals[0].store}</a></h3>"
+                              + $"<h3>{game.info.title} is selling for <span style = 'color:red'>${game.deals[0].price}</span> on <a href = '{REDIRECT_URL + game.deals[0].dealID}' style=''>{game.deals[0].store}</a></h3>"
                               + $"</div>"
                               + $"</body>"
                               + $"</html>";
