@@ -116,6 +116,10 @@ namespace GameDealsNotification.Services
                                 temp.deals[0].store = Store.AllYouPlay.ToString();
                                 temp.deals[0].storeURL = _options.Value.Stores.AllYouPlay;
                                 break;
+                            case (int)Store.Voidu:
+                                temp.deals[0].store = Store.Voidu.ToString();
+                                temp.deals[0].storeURL = _options.Value.Stores.Voidu;
+                                break;
                         }
                         if (await _emailService.SendNotiAsync(noti, temp))
                             await _dBContext.DeleteNotificationAsync(noti);

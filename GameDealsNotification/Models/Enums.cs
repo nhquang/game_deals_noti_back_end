@@ -23,6 +23,7 @@ namespace GameDealsNotification.Models
         Fanatical = 15,
         WinGameStore = 21,
         GameBillet = 23,
+        Voidu = 24,
         EpicGames = 25,
         Gamesplanet = 27,
         Gamesload,

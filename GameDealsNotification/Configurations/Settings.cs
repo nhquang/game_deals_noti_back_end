@@ -38,7 +38,7 @@ namespace GameDealsNotification.Configurations
         public string IndieGala { get; set; }
         public string Blizzard { get; set; }
         public string AllYouPlay { get; set; }
-
+        public string Voidu { get; set; }
     }
 
 }

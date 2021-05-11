@@ -156,6 +156,10 @@ namespace GameDealsNotification.Controllers
                             rs.deals[i].store = Store.AllYouPlay.ToString();
                             rs.deals[i].storeURL = _settings.Value.Stores.AllYouPlay;
                             break;
+                        case (int)Store.Voidu:
+                            rs.deals[i].store = Store.Voidu.ToString();
+                            rs.deals[i].storeURL = _settings.Value.Stores.Voidu;
+                            break;
                     }
                 }
 
