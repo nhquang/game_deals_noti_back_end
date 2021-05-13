@@ -105,11 +105,11 @@ namespace GameDealsNotification.Services
                 {
                     var temp = new Notification()
                     {
-                        game_id = (int)reader.GetInt64(0),
+                        game_id = reader.GetInt32(0),
                         email = reader.GetString(1),
-                        price = (double)reader.GetDecimal(2),
-                        name = reader.GetString(3),
-                        currency = (Currency)reader.GetInt32(4),
+                        price = (double)reader.GetDecimal(3),
+                        name = reader.GetString(2),
+                        currency = (Currency)reader.GetInt16(4),
                         game = reader.GetString(5)
                     };
                     rslt.Add(temp);
