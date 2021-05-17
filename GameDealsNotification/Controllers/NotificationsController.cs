@@ -33,7 +33,6 @@ namespace GameDealsNotification.Controllers
         // GET api/values
         [HttpGet]
         [Route("GetGames")]
-        [EnableCors("MyPolicy")]
         public async Task<ActionResult> GetGames()
         {
             try
@@ -54,7 +53,6 @@ namespace GameDealsNotification.Controllers
         // GET api/values/5
         [HttpGet]
         [Route("GetNotifications")]
-        [EnableCors("MyPolicy")]
         public async Task<ActionResult> GetNotifications()
         {
             try
@@ -71,7 +69,6 @@ namespace GameDealsNotification.Controllers
         }
         [HttpGet]
         [Route("GetDeals")]
-        [EnableCors("MyPolicy")]
         public async Task<ActionResult> GetDeals()
         {
             try
@@ -175,7 +172,6 @@ namespace GameDealsNotification.Controllers
         // POST api/values
         [HttpPost]
         [Route("AddNotification")]
-        [EnableCors("MyPolicy")]
         public async Task<ActionResult> Post([FromBody]Notification notification)
         {
             try
@@ -199,7 +195,6 @@ namespace GameDealsNotification.Controllers
         // DELETE api/values/5
         [HttpDelete]
         [Route("DeleteNotification")]
-        [EnableCors("MyPolicy")]
         public async Task<ActionResult> Delete([FromBody] Notification notification)
         {
             try
